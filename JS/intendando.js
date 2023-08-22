@@ -1,16 +1,17 @@
-const btnCalcularProductos = () =>{
+const btnCalcularProductos = () => {
     const btnCalcular = document.getElementById("btn-calcularProductos");
-    
+
     const containerButtons = document.getElementById("cargaProductos");
 
-    btnCalcular.addEventListener("click", () =>{
+    btnCalcular.addEventListener("click", () => {
         contPadre.innerHTML = renderContPadre();
-        agregarCampoOnClick1();
+        crearElementosPedidos();
         enviarPedido();
         volverAtrasCalcularProducto();
         containerButtons.innerHTML = "";
-        containerButtons.className= "heigth-0"
+        containerButtons.className = "heigth-0"
     })
+
 }
 
 
@@ -34,7 +35,7 @@ const renderContPadre = () => {
                                      
                                     </div>
                                     <div class="my-2 botonesCargar">
-                                        <button id="btn-pedido" type="button" class="btn bg-dark border border-warning text-warning">Producto(+)</button>
+                                        
                                         <button type="submit" class="btn bg-dark text-warning border border-warning text-warning">Enviar(+)</button>
                                         <button id="btn-descontarStock" type="button" class="btn bg-dark text-warning border border-warning text-warning">Descontar Stock</button>
                                     </div>
@@ -63,41 +64,41 @@ const renderContPadre = () => {
      <div class="btn-volver border border-ligth">
          <button id="btn-volverAtras"class="btn bg-warning">Volver</button>
      </div>`;
-    
+
 };
 
 const crearElementosPedidos = () => {
     const formElementsDiv1 = document.getElementById('formElements1');
-    
+
     const nuevoProductoDiv1 = document.createElement('div');
     nuevoProductoDiv1.className = "border border-warning my-2"
 
     const nombreInput1 = document.createElement('input');
     nombreInput1.type = 'text';
     nombreInput1.placeholder = 'Nombre del producto';
-    nombreInput1.className="m-2";
-  
+    nombreInput1.className = "m-2";
+
     const precioInput1 = document.createElement('input');
     precioInput1.type = 'number';
     precioInput1.placeholder = 'Precio';
-    precioInput1.className="m-2";
-    
-  
+    precioInput1.className = "m-2";
+
+
     const categoriaInput1 = document.createElement('input');
     categoriaInput1.type = 'text';
     categoriaInput1.placeholder = 'Categoria';
-    categoriaInput1.className="m-2";
-  
+    categoriaInput1.className = "m-2";
+
     const unidadesInput1 = document.createElement('input');
     unidadesInput1.type = 'number';
     unidadesInput1.placeholder = 'Unidades';
-    unidadesInput1.className="m-2";
+    unidadesInput1.className = "m-2";
 
     const inputDescuento = document.createElement('input');
     inputDescuento.type = 'text';
     inputDescuento.placeholder = 'Descuento Producto';
-    inputDescuento.className="m-2";
-  
+    inputDescuento.className = "m-2";
+
     nuevoProductoDiv1.appendChild(nombreInput1);
     nuevoProductoDiv1.appendChild(precioInput1);
     nuevoProductoDiv1.appendChild(categoriaInput1);
@@ -106,89 +107,69 @@ const crearElementosPedidos = () => {
     formElementsDiv1.appendChild(nuevoProductoDiv1);
 }
 
-// Función para CARGAR el formulario de stock
-const renderFormStock1 = () => {
 
-    const nomb = document.getElementById("nombreDestinatario").value
-    if(nomb !== "" && isNaN(nomb)){
-        crearElementosPedidos();
-    }else{
-        console.log("ingresa un nombre de cliente si o si");
-    }
- 
-};
 
-// Funcion eventica para renderizar el formulario infinito
- const agregarCampoOnClick1 = () => {
-    const botonAgregarCampo1 = document.getElementById('btn-pedido');
-    
-    botonAgregarCampo1.addEventListener('click',
-     renderFormStock1
-   );
-}
-
-const enviarPedido = () =>{
+const enviarPedido = () => {
     const formStock1 = document.getElementById("formStock1");
-    
+
     formStock1.addEventListener("submit", (e) => {
-    e.preventDefault();
-    procesarFormulario1();
-    mostrarBtnFinalizar1()
-    formStock1.reset();
-    
-    const numeroComprobante = comprobantePedido;
-    comprobantePedido++;
-    console.log("Número de comprobante:", numeroComprobante);
- });
+        e.preventDefault();
+        procesarFormulario1();
+        mostrarBtnFinalizar1()
+        formStock1.reset();
+        const numeroComprobante = comprobantePedido;
+        comprobantePedido++;
+        console.log("Número de comprobante:", numeroComprobante);
+    });
 }
 
 const procesarFormulario1 = () => {
     const formElements1 = document.getElementById('formElements1').children;
     const nombreCliente = document.getElementById("nombreDestinatario").value.toUpperCase();
     let contadorID = 1
-   
-    // Iteramos sobre los elementos del formulario
-    for (const productoDiv of formElements1){
-      const nombreProducto = productoDiv.children[0].value.trim().toUpperCase();
-      const precioProducto = parseFloat(productoDiv.children[1].value);
-      const categoriaProducto = productoDiv.children[2].value;
-      const unidadesProducto = parseInt(productoDiv.children[3].value);
-      const descuentoProducto = parseInt(productoDiv.children[4].value);
-  
-      const producto1 = {
-        id: contadorID,
-        nombreCliente: nombreCliente,
-        nombreProducto,
-        precioProducto,
-        categoriaProducto,
-        unidadesProducto,
-        descuentoProducto
-      };
 
-      if(nombreProducto !== "" &&
-        precioProducto !== "" &&
-        categoriaProducto !== "" && 
-        unidadesProducto !== "" &&
-        descuentoProducto !== ""){
+    // Iteramos sobre los elementos del formulario
+    for (const productoDiv of formElements1) {
+        const nombreProducto = productoDiv.children[0].value.trim().toUpperCase();
+        const precioProducto = parseFloat(productoDiv.children[1].value);
+        const categoriaProducto = productoDiv.children[2].value;
+        const unidadesProducto = parseInt(productoDiv.children[3].value);
+        const descuentoProducto = parseFloat(productoDiv.children[4].value);
+
+        const producto1 = {
+            id: contadorID,
+            nombreCliente: nombreCliente,
+            nombreProducto,
+            precioProducto,
+            categoriaProducto,
+            unidadesProducto,
+            descuentoProducto
+        };
+
+        if (nombreProducto !== "" &&
+            precioProducto !== "" &&
+            categoriaProducto !== "" &&
+            unidadesProducto !== "" &&
+            descuentoProducto !== "") {
             datos.push(producto1);
             console.log(datos);
-        }else{
+        } else {
             console.log("Debes realizar este pedido para enviar");
         }
-      contadorID++;
+        contadorID++;
 
     }
-   localStorage.setItem("misPedidos",JSON.stringify(datos));
+    localStorage.setItem("misPedidos", JSON.stringify(datos));
 };
 
 // Funcion volver atras calcular producto
-const volverAtrasCalcularProducto = () =>{
+const volverAtrasCalcularProducto = () => {
     const btnVolver = document.getElementById("btn-volverAtras");
     const containerPadre = document.getElementById("containerPadre");
     const cargarOcalcular = document.getElementById("cargaProductos");
-    btnVolver.addEventListener("click", () =>{
-        containerPadre.innerHTML="";
-        cargarOcalcular.className="containerCargarOcalcular"
+    btnVolver.addEventListener("click", () => {
+        containerPadre.innerHTML = "";
+        cargarOcalcular.className = "containerCargarOcalcular"
         renderContButtonsEleccion();
         btnCargarProductos();
         btnCalcularProductos();
@@ -209,16 +190,16 @@ const mostrarBtnFinalizar1 = () => {
         let pepo1 = ""
 
         if (misProductos.length > 0) {
-            
-          const  lastProductoObjeto = misProductos[misProductos.length - 1];
-          const nombreProducto1 = lastProductoObjeto.nombreProducto.trim();
-          const unidadesProducto1 = lastProductoObjeto.unidadesProducto;
 
-          console.log("Tu nombre de producto es:", nombreProducto1);
-            
-          pepo1 = prodBasedeDatos1.find((element) => element.nombre === nombreProducto1);
+            const lastProductoObjeto = misProductos[misProductos.length - 1];
+            const nombreProducto1 = lastProductoObjeto.nombreProducto.trim();
+            const unidadesProducto1 = lastProductoObjeto.unidadesProducto;
 
-          
+            console.log("Tu nombre de producto es:", nombreProducto1);
+
+            pepo1 = prodBasedeDatos1.find((element) => element.nombre === nombreProducto1);
+
+
             if (pepo1) {
                 pepo1.unidades -= unidadesProducto1;
             }
@@ -227,6 +208,23 @@ const mostrarBtnFinalizar1 = () => {
 
         }
         localStorage.setItem("baseDatos", JSON.stringify(prodBasedeDatos1));
+        Toastify({
+
+            text: "STOCK DESCONTADO!",
+            backgroundColor: "red",
+            textColor: "black",
+            duration: 3000,
+            gravity: "bottom",
+            position: "center",
+            style: {
+                color: "white",
+            },
+
+        }).showToast();
+
+        setTimeout(() => {
+            descargarPDF("misPedidosPdf");
+        }, 3000);
     });
 };
 
