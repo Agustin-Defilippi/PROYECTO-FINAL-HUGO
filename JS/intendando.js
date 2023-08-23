@@ -175,6 +175,7 @@ const volverAtrasCalcularProducto = () => {
         btnCalcularProductos();
         btnBaseDatos();
         btnCargarPedidos();
+        btnListaPrecios();
     })
 }
 

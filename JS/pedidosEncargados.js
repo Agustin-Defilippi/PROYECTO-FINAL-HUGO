@@ -22,7 +22,8 @@ const volverAtrasMisPedidos= () =>{
         btnBaseDatos();
         btnCargarProductos();
         btnCalcularProductos();
-        btnCargarPedidos()
+        btnCargarPedidos();
+        btnListaPrecios();
     })
 }
 
@@ -162,7 +163,7 @@ const renderizarPedido = () => {
 
   const arrayFiltradoCliente = pedidos.filter(item => item.nombreCliente === inputNombreCliente.value.trim().toUpperCase());
 
-  
+
   // Limpiamos los resultados anteriores antes de mostrar los nuevos
   misPedidos.innerHTML = '';
 
@@ -274,9 +275,6 @@ const verProductosGuardados = (elementoNombre) => {
      
     });
 
-  
-
-
    calcularTotalPrecioLista(filtracionNombre);
    calcularTotalPrecioNeto(filtracionNombre);    
   });
@@ -312,11 +310,11 @@ const calcularDescuentos = (precioProducto,porcentajeDescuento) =>{
 // Función para generar y descargar el PDF
 const descargarPDF = (x) => {
     const element = document.getElementById(x); // Reemplaza "contenido" con el ID del contenedor que contiene los datos a convertir
-  
+    const nombreCliente = document.getElementById("clienteNombre").value.toUpperCase();
     // Configuración opcional para el tamaño y orientación del PDF
     const options = {
       margin: 15,
-      filename: "PedidosHUGO.pdf",
+      filename: `PedidosHUGO ${nombreCliente}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2,className:"pdf-style"},
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },

@@ -1,6 +1,5 @@
 // Funcion Click button Calcular productos
 const btnBaseDatos = () =>{
-    
     const btnDatos = document.getElementById("btn-baseDatos");
     const containerButtons = document.getElementById("cargaProductos");
     
@@ -24,6 +23,7 @@ const volverAtrasBaseDatos= () =>{
         btnCargarProductos();
         btnCalcularProductos();
         btnCargarPedidos();
+        btnListaPrecios();
     })
 }
 
@@ -42,6 +42,7 @@ const renderBaseDatos = () =>{
                   <th scope="col">#</th>
                   <th scope="col">Producto</th>
                   <th scope="col">Categoria</th>
+                  <th scope="col">Proveedor</th>
                   <th scope="col">Precio</th>
                   <th scope="col">Stock</th>
                   <th scope="col">Eliminar</th>
@@ -83,6 +84,7 @@ const renderListaBaseDatos = (productos) =>{
     <td>${posicion}</td>
     <td>${item.nombre}</td>
     <td>${item.categoria}</td>
+    <td>${item.proveedor}</td>
     <td id="pepe${posicion}">$${item.precio} ARS</td>
     <td id="cant${posicion}">${item.unidades}</td>
     <td><button type="button" id=${posicion} class="btn bg-danger text-light">Eliminar</button></td>

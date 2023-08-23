@@ -28,7 +28,6 @@ const crearNuevoCampo = () => {
     precioInput.placeholder = 'Precio';
     precioInput.className="m-1";
     
-  
     const categoriaInput = document.createElement('input');
     categoriaInput.type = 'text';
     categoriaInput.placeholder = 'Categoria';
@@ -38,12 +37,18 @@ const crearNuevoCampo = () => {
     unidadesInput.type = 'number';
     unidadesInput.placeholder = 'Unidades';
     unidadesInput.className="m-1";
+
+    const proveedorInput = document.createElement('input');
+    proveedorInput.type = 'text';
+    proveedorInput.placeholder = 'Proveedor';
+    proveedorInput.className="m-1";
   
     nuevoProductoDiv.appendChild(nombreInput);
     nuevoProductoDiv.appendChild(precioInput);
     nuevoProductoDiv.appendChild(categoriaInput);
     nuevoProductoDiv.appendChild(unidadesInput);
-  
+    nuevoProductoDiv.appendChild(proveedorInput);
+
     formElementsDiv.appendChild(nuevoProductoDiv);
 }
 
@@ -123,14 +128,16 @@ const procesarFormulario = () => {
   for (const productoDiv of formElements){
     const nombre = productoDiv.children[0].value.trim().toUpperCase();
     const precio = parseFloat(productoDiv.children[1].value);
-    const categoria = productoDiv.children[2].value;
+    const categoria = productoDiv.children[2].value.trim().toUpperCase();
     const unidades = parseInt(productoDiv.children[3].value);
+    const proveedor = productoDiv.children[4].value.trim().toUpperCase();
 
     const producto = {
       nombre,
       precio,
       categoria,
       unidades,
+      proveedor
     };
 
     nuevosProductos.push(producto);
@@ -161,5 +168,6 @@ const volverAtrasCargarProducto = () =>{
         btnCalcularProductos();
         btnBaseDatos();
         btnCargarPedidos();
+        btnListaPrecios();
     })
 }

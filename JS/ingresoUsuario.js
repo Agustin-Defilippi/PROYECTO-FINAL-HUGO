@@ -24,6 +24,7 @@ const permitirIngreso = () => {
             btnCalcularProductos();
             btnBaseDatos();
             btnCargarPedidos();
+            btnListaPrecios();
             
         }else {
             const errorIngreso = document.getElementById("errorIngreso");
@@ -45,14 +46,14 @@ const renderContButtonsEleccion = () =>{
         <h3>PANEL DE CONTROL</h3>
         <div class="cont-btn-eleccion">
             <button id="btn-calcularProductos" class="btn bg-dark text-warning">Hacer Pedido</button>
-        
        
             <button id="btn-cargarProductos" class="btn bg-dark text-warning">Cargar Productos</button>
-        
        
             <button id="btn-baseDatos" class="btn bg-dark text-warning">Base de Datos</button>
 
             <button id="btn-misPedidos" class="btn bg-dark text-warning">Mis Pedidos</button>
+
+            <button id="btn-listaPrecios" class="btn bg-dark text-warning">Listas de Precios</button>
         </div>
     </div> `
 }
