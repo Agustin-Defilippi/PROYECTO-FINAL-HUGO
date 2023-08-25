@@ -189,7 +189,7 @@ const renderizarListasXproveedor = () =>{
     const btnPdf2 = document.getElementById("btn-pdf2");
 
     btnPdf2.addEventListener("click", ()=>{
-       /*  Toastify({
+         Toastify({
 
             text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
             backgroundColor:"red",
@@ -205,9 +205,10 @@ const renderizarListasXproveedor = () =>{
   
           setTimeout(() => {
            
-           
-        }, 3000); */
-        generarPDF(productosPorProveedor)
+            generarPDF(productosPorProveedor);
+
+        }, 3000); 
+        
        
     })
    
@@ -258,92 +259,6 @@ const renderizarListasXCategoria = () =>{
 }
 
 
-
-/* const descargarPDF2 = (x) => {
-    const element = document.getElementById(x); // Reemplaza "contenido" con el ID del contenedor que contiene los datos a convertir
-    const nombreLista = document.getElementById("nombreProveedor").value.toUpperCase();
-    const CategoriaProductos = document.getElementById("nombreCategoriaProducto").value.toUpperCase();
-
-    const dynamicTitle = nombreLista !== "" ? `LISTAS DE PRECIO ${nombreLista}` : `LISTAS DE ${CategoriaProductos}`;
-
-    // Agregar el título dinámico al contenido
-    const titleElement = document.createElement("h1");
-    titleElement.textContent = dynamicTitle;
-    titleElement.className="bg-black text-danger fs-2"
-    element.insertBefore(titleElement, element.firstChild);
-
-    // Definir las opciones para la generación del PDF
-    const options = {
-        margin: 10,
-        name:"hola",
-        filename: `${dynamicTitle}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, className: "pdf-style" },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-
-    // Generar el PDF con el contenido modificado
-    html2pdf().from(element).set(options).save();
-
-    // Restaurar el contenido eliminando el título después de generar el PDF
-    element.removeChild(titleElement);
-}; */
-
-
-/* const pdfArchivo = () => {
-    const maintable = document.getElementById("listasPrecios2");
-  
-    var doc = new jsPDF('p', 'pt', 'a4');
-    var margin = 10;
-    var scale = (doc.internal.pageSize.width - margin * 2) / (document.body.clientWidth * 0.65); 
-
-
-    var scale_mobile = (doc.internal.pageSize.width - margin * 2) / document.body.getBoundingClientRect();
-  
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      
-      doc.html(maintable, {
-        x: margin,
-        y: margin,
-        html2canvas: {
-          scale: scale_mobile,
-          style: {
-            'font-size': '2em',
-            
-          }
-        },
-        callback: function (doc) {
-            doc.setFontSize(50);  
-          doc.setTextColor(0, 0, 0);
-          doc.setFontSize(16);
-          doc.setFont('helvetica', 'bold');
-          doc.output('dataurlnewwindow', { filename: 'pdf.pdf' });
-        }
-      });
-    } else {
- 
-      doc.html(maintable, {
-        x: margin,
-        y: margin,
-        html2canvas: {
-          scale: scale,
-          style: {
-            'font-size': '2em',
-            "color": "red"
-            
-          }
-        },
-        callback: function (doc) {
-            doc.setFontSize(50);
-          doc.setTextColor(0, 0, 0);
-          doc.setFontSize(16);
-          doc.setFont('helvetica', 'bold');
-          doc.output('dataurlnewwindow', { filename: 'HOLA.pdf' });
-        }
-      });
-    }
-  } */
-  
 
 
 const generarPDF = (datos) => {
