@@ -42,12 +42,18 @@ const crearNuevoCampo = () => {
     proveedorInput.type = 'text';
     proveedorInput.placeholder = 'Proveedor';
     proveedorInput.className="m-1";
+
+    const imagenProductoInput = document.createElement('input');
+    imagenProductoInput.type = 'text';
+    imagenProductoInput.placeholder = 'URL Imagen Producto';
+    imagenProductoInput.className="m-1";
   
     nuevoProductoDiv.appendChild(nombreInput);
     nuevoProductoDiv.appendChild(precioInput);
     nuevoProductoDiv.appendChild(categoriaInput);
     nuevoProductoDiv.appendChild(unidadesInput);
     nuevoProductoDiv.appendChild(proveedorInput);
+    nuevoProductoDiv.appendChild(imagenProductoInput);
 
     formElementsDiv.appendChild(nuevoProductoDiv);
 }
@@ -131,13 +137,15 @@ const procesarFormulario = () => {
     const categoria = productoDiv.children[2].value.trim().toUpperCase();
     const unidades = parseInt(productoDiv.children[3].value);
     const proveedor = productoDiv.children[4].value.trim().toUpperCase();
+    const imgProducto = productoDiv.children[5].value
 
     const producto = {
       nombre,
       precio,
       categoria,
       unidades,
-      proveedor
+      proveedor,
+      imgProducto
     };
 
     nuevosProductos.push(producto);

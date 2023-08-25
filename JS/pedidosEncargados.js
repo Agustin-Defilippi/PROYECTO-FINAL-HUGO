@@ -33,7 +33,7 @@ const renderMisPedidos = () =>{
     contMisPedidos.innerHTML= `
     <div  class="containerPrograma4" id="containerPrograma4">
       <div  class="containerForm4">
-        <div id="misPedidosPdf" class="containerForm4">
+        <div  class="containerForm4">
           <h1>MIS PEDIDOS</h1>
           <div class="containerForm7">
 
@@ -127,7 +127,7 @@ const renderContenedores = () =>{
 
   inputNombreCliente.addEventListener("input", () =>{
     contenedores.innerHTML = `
-  <table    class="table table-striped border border-dark">
+  <table  id="misPedidosPdf"  class="table table-striped border border-dark">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -313,7 +313,7 @@ const descargarPDF = (x) => {
     const nombreCliente = document.getElementById("clienteNombre").value.toUpperCase();
     // Configuración opcional para el tamaño y orientación del PDF
     const options = {
-      margin: 15,
+      margin: 5,
       filename: `PedidosHUGO ${nombreCliente}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2,className:"pdf-style"},

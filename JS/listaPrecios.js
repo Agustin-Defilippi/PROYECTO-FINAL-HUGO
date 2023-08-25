@@ -1,3 +1,5 @@
+
+
 const btnListaPrecios = () => {
     const btnListaPrecios1 = document.getElementById("btn-listaPrecios");
     const containerButtons = document.getElementById("cargaProductos");
@@ -58,7 +60,7 @@ const renderListaPrecios = () =>{
         </div>
         
     
-        <div class="btn-resetBase">
+        <div class="contPdf">
           <button id="btn-pdf2"class="btn bg-danger text-light" type="button">Descargar PDF</button>
         </div>
       </div>
@@ -69,7 +71,7 @@ const renderListaPrecios = () =>{
     
     
     renderContenedoresListaPrecios();
-    botonDescargarPdf();
+    
     volverAtrasListaPrecios();
 }
 
@@ -100,8 +102,11 @@ const renderContenedoresListaPrecios = () =>{
       contenedores.innerHTML = `
         <table id="listasPrecios2" class="table table-striped border border-dark">
             <thead>
+                <div id="listaProv">
+                </div>
                 <tr>
                 <th scope="col">#</th>
+                <th scope="col">id</th>
                 <th scope="col">Producto</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Precio</th>
@@ -121,8 +126,11 @@ const renderContenedoresListaPrecios = () =>{
         contenedores.innerHTML = `
           <table id="listasPrecios2" class="table table-striped border border-dark" id="listasProveedores">
               <thead>
+                  <div id="listaProv">
+                  </div>
                   <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">id</th>
+                  <th scope="col">item#</th>
                   <th scope="col">Producto</th>
                   <th scope="col">Categoria</th>
                   <th scope="col">Precio</th>
@@ -139,6 +147,9 @@ const renderContenedoresListaPrecios = () =>{
     });
 }
 
+
+
+
 const renderizarListasXproveedor = () =>{
     const productosBaseDatos = JSON.parse(localStorage.getItem("baseDatos"));
     const listasPrecio = document.getElementById("listasPrecios");
@@ -150,12 +161,12 @@ const renderizarListasXproveedor = () =>{
     const productosPorProveedor = productosBaseDatos.filter(element =>
     element.proveedor === nombreProveedores);
 
-    console.log(productosPorProveedor);
-
     productosPorProveedor.forEach((item,i) => {
         const contenedorListas = document.createElement("tr");
+       
         let PrecioSinIVA2 =(item.precio/ 1.21).toFixed(2)
         contenedorListas.innerHTML=`
+        <td><img class="tamanoImgProductos" src=${item.imgProducto}></td>
         <td>${i}</td>
         <td>${item.nombre}</td>
         <td>${item.categoria}</td>
@@ -165,7 +176,41 @@ const renderizarListasXproveedor = () =>{
 
         listasPrecio.appendChild(contenedorListas);
     });
-    console.log(productosPorProveedor);
+    const listaProv = document.getElementById("listaProv");
+    const div = document.createElement("div");
+    const h2 = document.createElement("div");
+    div.className="w-100  bg-danger"
+    h2.textContent= `LISTA DE PRECIOS ${nombreProveedores}`
+    h2.className="bg-dark text-light w-100"
+    div.appendChild(h2);
+    listaProv.appendChild(div);
+    listaProv.className = "w-100"
+
+    const btnPdf2 = document.getElementById("btn-pdf2");
+
+    btnPdf2.addEventListener("click", ()=>{
+       /*  Toastify({
+
+            text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
+            backgroundColor:"red",
+            textColor:"black",
+            duration: 3000, 
+            gravity: "bottom", 
+            position: "center",
+            style: {
+              color:"white",
+            },
+            
+          }).showToast();
+  
+          setTimeout(() => {
+           
+           
+        }, 3000); */
+        generarPDF(productosPorProveedor)
+       
+    })
+   
 }
 
 const renderizarListasXCategoria = () =>{
@@ -187,6 +232,7 @@ const renderizarListasXCategoria = () =>{
 
         let PrecioSinIVA2 =(item.precio/ 1.21).toFixed(2)
         contenedorListas2.innerHTML=`
+        <td><img class="tamanoImgProductos" src=${item.imgProducto}></td>
         <td>${i}</td>
         <td>${item.nombre}</td>
         <td>${item.categoria}</td>
@@ -195,62 +241,138 @@ const renderizarListasXCategoria = () =>{
         <td>${(item.precio- PrecioSinIVA2).toFixed(2)}</td>`
 
         listasPrecio2.appendChild(contenedorListas2);
-    });
+    }); 
+    const listaProv = document.getElementById("listaProv");
+    const div = document.createElement("div");
+    const h2 = document.createElement("div");
+    div.className="w-100  bg-danger"
+    h2.textContent= `LISTA DE PRECIOS ${nombreCategoriaProductos}`
+    h2.className="bg-dark text-light w-100"
+    div.appendChild(h2);
+    listaProv.appendChild(div);
+    listaProv.className = "w-100"
+     
     console.log(productosPorProveedor2);
+
+
 }
 
 
 
-const descargarPDF2 = (x) => {
+/* const descargarPDF2 = (x) => {
     const element = document.getElementById(x); // Reemplaza "contenido" con el ID del contenedor que contiene los datos a convertir
     const nombreLista = document.getElementById("nombreProveedor").value.toUpperCase();
-
     const CategoriaProductos = document.getElementById("nombreCategoriaProducto").value.toUpperCase();
 
-    if (nombreLista !== "") {
+    const dynamicTitle = nombreLista !== "" ? `LISTAS DE PRECIO ${nombreLista}` : `LISTAS DE ${CategoriaProductos}`;
 
-        const options = {
-            margin: 20,
-            filename: `LISTAS DE PRECIO ${nombreLista}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2,className:"pdf-style"},
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            
-        };
-        html2pdf().from(element).set(options).save();
-    }else{
-        const options = {
-            margin: 20,
-            filename: `LISTAS DE ${CategoriaProductos}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2,className:"pdf-style"},
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            
-        };
-        html2pdf().from(element).set(options).save();
-    }
-}; 
+    // Agregar el título dinámico al contenido
+    const titleElement = document.createElement("h1");
+    titleElement.textContent = dynamicTitle;
+    titleElement.className="bg-black text-danger fs-2"
+    element.insertBefore(titleElement, element.firstChild);
 
-const botonDescargarPdf = () =>{
-    const btnPdf2 = document.getElementById("btn-pdf2");
+    // Definir las opciones para la generación del PDF
+    const options = {
+        margin: 10,
+        name:"hola",
+        filename: `${dynamicTitle}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, className: "pdf-style" },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
 
-    btnPdf2.addEventListener("click", ()=>{
-        Toastify({
+    // Generar el PDF con el contenido modificado
+    html2pdf().from(element).set(options).save();
 
-            text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
-            backgroundColor:"red",
-            textColor:"black",
-            duration: 3000, 
-            gravity: "bottom", 
-            position: "center",
-            style: {
-              color:"white",
-            },
-            
-          }).showToast();
+    // Restaurar el contenido eliminando el título después de generar el PDF
+    element.removeChild(titleElement);
+}; */
+
+
+/* const pdfArchivo = () => {
+    const maintable = document.getElementById("listasPrecios2");
   
-          setTimeout(() => {
-            descargarPDF2("listasPrecios2"); 
-        }, 3000);
-    })
+    var doc = new jsPDF('p', 'pt', 'a4');
+    var margin = 10;
+    var scale = (doc.internal.pageSize.width - margin * 2) / (document.body.clientWidth * 0.65); 
+
+
+    var scale_mobile = (doc.internal.pageSize.width - margin * 2) / document.body.getBoundingClientRect();
+  
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      
+      doc.html(maintable, {
+        x: margin,
+        y: margin,
+        html2canvas: {
+          scale: scale_mobile,
+          style: {
+            'font-size': '2em',
+            
+          }
+        },
+        callback: function (doc) {
+            doc.setFontSize(50);  
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(16);
+          doc.setFont('helvetica', 'bold');
+          doc.output('dataurlnewwindow', { filename: 'pdf.pdf' });
+        }
+      });
+    } else {
+ 
+      doc.html(maintable, {
+        x: margin,
+        y: margin,
+        html2canvas: {
+          scale: scale,
+          style: {
+            'font-size': '2em',
+            "color": "red"
+            
+          }
+        },
+        callback: function (doc) {
+            doc.setFontSize(50);
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(16);
+          doc.setFont('helvetica', 'bold');
+          doc.output('dataurlnewwindow', { filename: 'HOLA.pdf' });
+        }
+      });
+    }
+  } */
+  
+
+
+const generarPDF = (datos) => {
+    let doc = new jsPDF();
+
+    const nombreProveedor = document.getElementById("nombreProveedor").value.toUpperCase();
+    const dynamicTitle = `LISTA DE PRECIOS ${nombreProveedor}`;
+
+    doc.setFontSize(16);
+    doc.text(dynamicTitle, 60, 8, { align: "center" });
+
+    const pdfData = datos.map(item => [
+        item.nombre,
+        item.categoria,
+        `$${item.precio} ARS`,
+        `$${(item.precio / 1.21).toFixed(2)} ARS`
+    ]);
+
+    if (pdfData.length > 0) {
+        doc.autoTable({
+            head: [["PRODUCTO", "CATEGORÍA", "PRECIO","PRECIO S/IVA"]],
+            body: pdfData
+        });
+
+        doc.save(dynamicTitle);
+    } else {
+        console.log("No se encontraron datos válidos para generar el PDF.");
+    }
 }
+
+
+
