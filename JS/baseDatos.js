@@ -24,6 +24,7 @@ const volverAtrasBaseDatos= () =>{
         btnCalcularProductos();
         btnCargarPedidos();
         btnListaPrecios();
+        textInfinito();
     })
 }
 

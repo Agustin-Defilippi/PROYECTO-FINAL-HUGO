@@ -20,6 +20,7 @@ const permitirIngreso = () => {
         if (nombreUsuario.value.toUpperCase() === "HUGO" && contraseñaUsuario.value.toUpperCase() === "HUGOCOLON10"){
             usuario.innerHTML = "";
             renderContButtonsEleccion();
+            textInfinito()
             btnCargarProductos();
             btnCalcularProductos();
             btnBaseDatos();
@@ -55,5 +56,20 @@ const renderContButtonsEleccion = () =>{
 
             <button id="btn-listaPrecios" class="btn bg-dark text-warning">Listas de Precios</button>
         </div>
+        <div id="contText">
+            <h4 id="textInfinit"></h4>
+        </div>
     </div> `
+}
+
+const textInfinito = () => {
+    const textoDiv = document.getElementById("textInfinit");
+    const contTexto = document.getElementById("contText");
+    const textoOriginal = 'DEFILIPPI HUGO';
+    let indice = 0;
+    contTexto.className="bg-dark text-warning w-100 text-center"
+    setInterval(() => {
+        textoDiv.innerHTML = textoOriginal.substring(0, indice + 1);
+        indice = (indice + 1) % textoOriginal.length;
+    }, 500);
 }

@@ -176,7 +176,23 @@ const volverAtrasCalcularProducto = () => {
         btnBaseDatos();
         btnCargarPedidos();
         btnListaPrecios();
+        textInfinito();
     })
+}
+const volverAtrasCalcularProducto2 = () => {
+  console.log("qsy");
+    const containerPadre = document.getElementById("containerPadre");
+    const cargarOcalcular = document.getElementById("cargaProductos");
+    
+        containerPadre.innerHTML = "";
+        cargarOcalcular.className = "containerCargarOcalcular"
+        renderContButtonsEleccion();
+        btnCargarProductos();
+        btnCalcularProductos();
+        btnBaseDatos();
+        btnCargarPedidos();
+        btnListaPrecios();
+        textInfinito();
 }
 
 const mostrarBtnFinalizar1 = () => {
@@ -209,6 +225,8 @@ const mostrarBtnFinalizar1 = () => {
 
         }
         localStorage.setItem("baseDatos", JSON.stringify(prodBasedeDatos1));
+       
+       
         Toastify({
 
             text: "STOCK DESCONTADO!",
@@ -223,10 +241,12 @@ const mostrarBtnFinalizar1 = () => {
 
         }).showToast();
 
+        
         setTimeout(() => {
-            descargarPDF("misPedidosPdf");
-        }, 3000);
+            volverAtrasCalcularProducto2()
+        }, 2000);
     });
+    
 };
 
 

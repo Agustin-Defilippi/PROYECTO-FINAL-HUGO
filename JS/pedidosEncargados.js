@@ -24,6 +24,7 @@ const volverAtrasMisPedidos= () =>{
         btnCalcularProductos();
         btnCargarPedidos();
         btnListaPrecios();
+        textInfinito();
     })
 }
 
@@ -96,28 +97,28 @@ const renderMisPedidos = () =>{
    renderContenedores();
    btnBorrarPedidos() ;
 
-      const btnPdf = document.getElementById("btn-pdf")
+/*    const btnPdf = document.getElementById("btn-pdf")
 
-      btnPdf.addEventListener("click", () =>{
-        Toastify({
+   btnPdf.addEventListener("click", () =>{
+     Toastify({
 
-          text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
-          backgroundColor:"red",
-          textColor:"black",
-          duration: 3000, 
-          gravity: "bottom", 
-          position: "center",
-          style: {
-            color:"white",
-          },
-          
-        }).showToast();
+       text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
+       backgroundColor:"red",
+       textColor:"black",
+       duration: 3000, 
+       gravity: "bottom", 
+       position: "center",
+       style: {
+         color:"white",
+       },
+       
+     }).showToast();
 
-        setTimeout(() => {
-          descargarPDF("misPedidosPdf"); 
-        }, 3000);
-      
-      })  
+     setTimeout(() => {
+       generarPDF2(arrayPedidosXnombre)
+     }, 3000);
+   
+   })   */
 }
 
 const renderContenedores = () =>{
@@ -155,6 +156,8 @@ const renderContenedores = () =>{
  
 }
 
+
+
 const renderizarPedido = () => {
   const pedidos = datos;
   const inputNombreCliente = document.getElementById("clienteNombre");
@@ -164,11 +167,12 @@ const renderizarPedido = () => {
   const arrayFiltradoCliente = pedidos.filter(item => item.nombreCliente === inputNombreCliente.value.trim().toUpperCase());
 
 
-  // Limpiamos los resultados anteriores antes de mostrar los nuevos
+ 
+
+  
   misPedidos.innerHTML = '';
 
   arrayFiltradoCliente.forEach((item, i) => {
-    // Renderizamos los pedidos filtrados por nombre de cliente
     let PrecioSinIVA =(item.precioProducto / 1.21).toFixed(2)
     const contenedorMisPedidos = document.createElement("tr");
     contenedorMisPedidos.innerHTML = `
@@ -185,27 +189,44 @@ const renderizarPedido = () => {
   
     `;
     misPedidos.appendChild(contenedorMisPedidos);
+    
   });
+  console.log(arrayFiltradoCliente);
+  const btnPdf = document.getElementById("btn-pdf")
+
+  btnPdf.addEventListener("click", () =>{
+    Toastify({
+
+      text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
+      backgroundColor:"red",
+      textColor:"black",
+      duration: 3000, 
+      gravity: "bottom", 
+      position: "center",
+      style: {
+        color:"white",
+      },
+      
+    }).showToast();
+
+    setTimeout(() => {
+      generarPDF2(arrayFiltradoCliente)
+    }, 3000);
+  
+  }) 
+
 
   inputPosicion.addEventListener("change", () => {
-    // Obtenemos el valor de posición seleccionado
     const posicionSeleccionada = parseInt(inputPosicion.value, 10);
-  
-    // Validamos que el valor ingresado sea un número válido
+
     if (isNaN(posicionSeleccionada)) {
       console.log("Ingrese un número válido de posición.");
       return;
     }
- 
-  
-    // Filtramos el array por la posición seleccionada
     const arrayFiltradoPorPosicion = arrayFiltradoCliente.filter((item, index) => index === posicionSeleccionada);
 
-    /* console.log(arrayFiltradoPorPosicion); */
-  
-    // Limpiamos los resultados anteriores antes de mostrar los nuevos
     misPedidos.innerHTML = '';
-  
+
     arrayFiltradoPorPosicion.forEach((elemento,i) => {
       // Renderizamos los pedidos filtrados por posición
       const contenedorPepe = document.createElement("tr");
@@ -238,6 +259,7 @@ const renderizarPedido = () => {
         pedidosGuardados.push(elemento);
         console.log(pedidosGuardados);
         localStorage.setItem("guardarPedidos", JSON.stringify(pedidosGuardados));
+        
         
       })
     });
@@ -307,23 +329,42 @@ const calcularDescuentos = (precioProducto,porcentajeDescuento) =>{
   return (precioConDescuento).toFixed(2);
 }
 
-// Función para generar y descargar el PDF
-const descargarPDF = (x) => {
-    const element = document.getElementById(x); // Reemplaza "contenido" con el ID del contenedor que contiene los datos a convertir
-    const nombreCliente = document.getElementById("clienteNombre").value.toUpperCase();
-    // Configuración opcional para el tamaño y orientación del PDF
-    const options = {
-      margin: 5,
-      filename: `PedidosHUGO ${nombreCliente}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2,className:"pdf-style"},
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      
-    };
 
-    // Utilizar html2pdf.js para generar el PDF
-    html2pdf().from(element).set(options).save();
-}; 
+const generarPDF2 = (datos) => {
+  let doc = new jsPDF();
+
+  const inputNombreCliente2 = document.getElementById("clienteNombre").value.toUpperCase();
+  const dynamicTitle = `PEDIDO ${inputNombreCliente2}`;
+
+  doc.setFontSize(25);
+  doc.setTextColor(0, 0, 0);
+  doc.setFillColor(255, 255, 255);
+  const titleWidth = doc.getStringUnitWidth(dynamicTitle) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+  const titleX = (doc.internal.pageSize.width - titleWidth) / 2;
+
+  doc.text(dynamicTitle, titleX, 15);
+  
+  const pdfData = datos.map(item => [
+    item.nombreProducto,
+    item.unidadesProducto,
+    `$${item.precioProducto} ARS`,
+    `$${(item.precioProducto / 1.21).toFixed(2)} ARS`,
+    `$${(item.precioProducto * item.unidadesProducto)} ARS`,
+    `$${calcularDescuentos(item.precioProducto,item.descuentoProducto) * item.unidadesProducto } ARS`,
+  ]);
+
+  if (pdfData.length > 0) {
+    doc.autoTable({
+      startY: 25,
+      head: [["PRODUCTO", "UNIDADES", "PRECIO", "PRECIO S/IVA","SUBTOTAL","TOTAL BONIFICADO"]],
+      body: pdfData
+    });
+
+    doc.save(dynamicTitle);
+  } else {
+    console.log("No se encontraron datos válidos para generar el PDF.");
+  }
+};
 
 const btnBorrarPedidos = () =>{
   const btnBorrarPedidos = document.getElementById("btn-borrarPedidos");

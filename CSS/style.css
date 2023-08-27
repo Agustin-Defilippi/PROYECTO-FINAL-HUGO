@@ -42,12 +42,12 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center; 
     background-color: rgb(139, 139, 139);
 }
 .containerUsuario .containerCargarOcalcular .cont-buttons .cont-btn-eleccion{
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
 }
@@ -423,3 +423,18 @@
     width: 100px;
     height: 100px;
 }
+
+/* @keyframes animation-background {
+    
+    0% { background-color: black }
+    25% { background-image: url(../img/logo2.png); }
+    50% { background-color: black }
+    75% { background-color: black }
+    
+}
+
+.fondoAnimacion{
+    animation: animation-background 5s infinite linear;
+    background-size: 100% 50%;
+    background-repeat: no-repeat;
+} */

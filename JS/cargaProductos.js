@@ -177,5 +177,6 @@ const volverAtrasCargarProducto = () =>{
         btnBaseDatos();
         btnCargarPedidos();
         btnListaPrecios();
+        textInfinito();
     })
 }
