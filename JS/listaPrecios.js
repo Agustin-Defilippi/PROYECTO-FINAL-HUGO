@@ -70,15 +70,15 @@ const inputProveedor = (listas) =>{
      
    
           </tbody>
-          <div>
-            <label class="mb-2"><b>Modificar Precio listas</b></label>
-            <input type="text" id="aumentoPrecios" placeholder="ingrese el porcentaje a aumentar" class="input-class mb-3">
-          </div>
+          <form id="formAumento" class="my-2 border border-">
+            <label class="mb-2 text-danger"><b>Modificar Precio listas%</b></label>
+            <input type="text" id="aumentoPrecios" placeholder="% aumento" class="input-class mb-3">
+            <button id="actualizarListas" type="button" class="btn bg-danger text-light">Actualizar</button>
+          </form>
           <h3 id="busqueda">
           </h3>
       </table>`
       renderizarListasXproveedor();
-     
   });
 }
 //FUNCION PARA RENDERIZAR LA TABLA DE CATEGORIAS Y SUS PRODUCTOS CORRESPONDIENTES
@@ -108,7 +108,6 @@ const inputCategoria = (listas) =>{
           </h3>
       </table>`
       renderizarListasXCategoria();
-     
   });
 }
 //FUNCION ENCARGADA DE FILTRAR LOS PRODUCTOS POR PROVEEDOR RENDERIZA LOS RESULTADOS
@@ -127,8 +126,6 @@ const renderizarListasXproveedor = () => {
 
   resultadoNoEcontrado(productosPorProveedor,busqueda1)
 
-
-    
   productosPorProveedor.forEach((item, i) => {
     const contenedorListas = document.createElement("tr");
 
@@ -155,8 +152,63 @@ const renderizarListasXproveedor = () => {
   listaProv.appendChild(div);
   listaProv.className = "w-100";
 
-  btnDescargarPdf(productosPorProveedor)
+  btnDescargarPdf(productosPorProveedor);
+
+
+  const nuevoArrayActualizado = productosPorProveedor;
+  
+ 
+  
+
+  
+
+ 
+
+ console.log(nuevoArrayActualizado);
+ envioFormulario(nuevoArrayActualizado,listasPrecio);
+ 
 };
+
+const envioFormulario = (array,contenedor) =>{
+  const botonActualizar = document.getElementById("actualizarListas");
+  botonActualizar.addEventListener("click", () => {
+    const aumentoListas = document.getElementById("aumentoPrecios").value;
+
+    const valorAumento = parseFloat(aumentoListas);
+
+    console.log(valorAumento);
+    aumentarPrecios(array,valorAumento);
+
+    actualizarListas(array,contenedor)
+
+  });
+}
+
+
+const actualizarListas = (array,cont) =>{
+  cont.innerHTML="";
+  array.forEach((listas,i) =>{
+    let PrecioSinIVA2 = (listas.precio / 1.21).toFixed(2);
+    const contenedorListasModificado = document.createElement("tr");
+    contenedorListasModificado.innerHTML= `<td><img class="tamanoImgProductos" src=${listas.imgProducto}></td>
+      <td>${i}</td>
+      <td>${listas.nombre}</td>
+      <td>${listas.categoria}</td>
+      <td>$${listas.precio} ARS</td>
+      <td>$${PrecioSinIVA2} ARS</td>
+      <td>${(listas.precio - PrecioSinIVA2).toFixed(2)}</td>`
+      cont.appendChild(contenedorListasModificado);
+  })
+  console.log(array);
+  localStorage.setItem("baseDatos",JSON.stringify(array));
+} 
+
+//FUNCION PARA AUMENTAR LISTAS DE PRECIOS
+const aumentarPrecios = (productos, porcentaje)=>{
+  productos.forEach(product =>{
+    product.precio = (product.precio * (1+porcentaje/100)).toFixed(2);
+  })
+}
 //FUNCION ENCARGADA DE FILTRAR LOS PRODUCTOS POR CATEGORIA Y RENDERIZA LOS RESULTADOS
 const renderizarListasXCategoria = () =>{
   const productosBaseDatos2 = JSON.parse(localStorage.getItem("baseDatos"));
