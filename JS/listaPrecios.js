@@ -28,12 +28,6 @@ const renderListaPrecios = () =>{
           <div id="contenedoresListaPrecios"class="containerForm8 pdf-style" id="misPdf table table-striped">
 
           </div>
-          <div id="productosGuardados">
-
-          </div>
-          <div id="verProductos">
-
-          </div>
         </div>
       </div>
       <div class="contPdf">
@@ -76,6 +70,10 @@ const inputProveedor = (listas) =>{
      
    
           </tbody>
+          <div>
+            <label class="mb-2"><b>Modificar Precio listas</b></label>
+            <input type="text" id="aumentoPrecios" placeholder="ingrese el porcentaje a aumentar" class="input-class mb-3">
+          </div>
           <h3 id="busqueda">
           </h3>
       </table>`
@@ -259,9 +257,6 @@ const generarPDF = (datos) => {
 //FUNCION CLICK PARA DESCARGAR PDF
 const btnDescargarPdf = (x) =>{
   const btnPdf2 = document.getElementById("btn-pdf2");
-
-
-
   btnPdf2.addEventListener("click", () => {
     console.log("si funciona");
     Toastify({

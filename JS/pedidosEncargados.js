@@ -1,33 +1,14 @@
+//FUNCION PARA RENDERIZAR EL CONTENDEDOR DE MIS PEDIDOS("HACIENDO CLICK")
 btnCargarPedidos = () =>{
     const containerButtons = document.getElementById("cargaProductos");
     const btnMisPedidos = document.getElementById("btn-misPedidos");
-
     btnMisPedidos.addEventListener("click", () =>{
         renderMisPedidos()
-       
         containerButtons.innerHTML = "";
         containerButtons.className= "heigth-0"
     })
 }
-
-// Funcion volver atras cargar producto
-const volverAtrasMisPedidos= () =>{
-    const btnVolver4 = document.getElementById("btn-volverAtras4");
-    const containerPrograma2 = document.getElementById("contMisPedidos");
-    const cargarOcalcular = document.getElementById("cargaProductos");
-    btnVolver4.addEventListener("click", () =>{
-        containerPrograma2.innerHTML="";
-        cargarOcalcular.className="containerCargarOcalcular"
-        renderContButtonsEleccion();
-        btnBaseDatos();
-        btnCargarProductos();
-        btnCalcularProductos();
-        btnCargarPedidos();
-        btnListaPrecios();
-        textInfinito();
-    })
-}
-
+//FUNCION PARA RENDERIZAR Y CREAR EL CONTENEDOR DE "MIS PEDIDOS"
 const renderMisPedidos = () =>{
     const contMisPedidos = document.getElementById("contMisPedidos");
 
@@ -90,37 +71,11 @@ const renderMisPedidos = () =>{
     <div class="btn-volver4 border border-ligth">
       <button id="btn-volverAtras4"class="btn bg-warning">Volver</button>
     </div>`
-  
-
-
    volverAtrasMisPedidos();
    renderContenedores();
    btnBorrarPedidos() ;
-
-/*    const btnPdf = document.getElementById("btn-pdf")
-
-   btnPdf.addEventListener("click", () =>{
-     Toastify({
-
-       text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
-       backgroundColor:"red",
-       textColor:"black",
-       duration: 3000, 
-       gravity: "bottom", 
-       position: "center",
-       style: {
-         color:"white",
-       },
-       
-     }).showToast();
-
-     setTimeout(() => {
-       generarPDF2(arrayPedidosXnombre)
-     }, 3000);
-   
-   })   */
 }
-
+//FUNCION PARA RENDERIZAR LA TABLA DE CLASIFICACIONES
 const renderContenedores = () =>{
   const contenedores = document.getElementById("contenedores");
   
@@ -150,14 +105,10 @@ const renderContenedores = () =>{
     <div id="cont-btnReset" class="w-100"></div>
   </table>`
     renderizarPedido(); 
-    console.log(inputNombreCliente.value);
     verProductosGuardados(inputNombreCliente.value.toUpperCase())
   })
- 
 }
-
-
-
+//FUNCION DE FILTRADO DE PEDIDOS POR CLIENTE Y FILTRADOS POR POSICION
 const renderizarPedido = () => {
   const pedidos = datos;
   const inputNombreCliente = document.getElementById("clienteNombre");
@@ -166,10 +117,6 @@ const renderizarPedido = () => {
 
   const arrayFiltradoCliente = pedidos.filter(item => item.nombreCliente === inputNombreCliente.value.trim().toUpperCase());
 
-
- 
-
-  
   misPedidos.innerHTML = '';
 
   arrayFiltradoCliente.forEach((item, i) => {
@@ -195,24 +142,11 @@ const renderizarPedido = () => {
   const btnPdf = document.getElementById("btn-pdf")
 
   btnPdf.addEventListener("click", () =>{
-    Toastify({
-
-      text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
-      backgroundColor:"red",
-      textColor:"black",
-      duration: 3000, 
-      gravity: "bottom", 
-      position: "center",
-      style: {
-        color:"white",
-      },
-      
-    }).showToast();
-
-    setTimeout(() => {
-      generarPDF2(arrayFiltradoCliente)
-    }, 3000);
-  
+    botonGenerarPdf(arrayFiltradoCliente);
+    setTimeout(() =>{
+      volverAtrasCalcularProducto2("contMisPedidos");
+    },2000)
+    
   }) 
 
 
@@ -228,7 +162,6 @@ const renderizarPedido = () => {
     misPedidos.innerHTML = '';
 
     arrayFiltradoPorPosicion.forEach((elemento,i) => {
-      // Renderizamos los pedidos filtrados por posición
       const contenedorPepe = document.createElement("tr");
       let PrecioSinIVA =(elemento.precioProducto / 1.21).toFixed(2)
       contenedorPepe.innerHTML = `
@@ -259,13 +192,32 @@ const renderizarPedido = () => {
         pedidosGuardados.push(elemento);
         console.log(pedidosGuardados);
         localStorage.setItem("guardarPedidos", JSON.stringify(pedidosGuardados));
-        
-        
       })
     });
   });
 }
+//FUNCION PARA ACTIVAR PROCESOS DE GENERACION DE PDF
+const botonGenerarPdf = (x) =>{
+  Toastify({
 
+    text: "PDF DESCARGADO, ENCUENTRALO EN LA CARPETA DESCARGAS!",
+    backgroundColor:"red",
+    textColor:"black",
+    duration: 3000, 
+    gravity: "bottom", 
+    position: "center",
+    style: {
+      color:"white",
+    },
+    
+  }).showToast();
+
+  generarPDF2(x);
+  setTimeout(() => {
+    volverAtrasCalcularProducto2();
+  }, 3000);
+}
+//FUNCION PARA VER Y RENDERIZAR LOS PEDIDOS GUARDADOS
 const verProductosGuardados = (elementoNombre) => {
   const btnVerPedidos = document.getElementById("btnPedidosGuardados");
   btnVerPedidos.addEventListener("click", () => {
@@ -293,13 +245,22 @@ const verProductosGuardados = (elementoNombre) => {
 
       inyectarHtml.classList.add("pedido-guardado"); // Agregamos una clase CSS a los pedidos guardados
       contVerPedidos.appendChild(inyectarHtml);
-
-     
+      
     });
+    const btnPdf2 = document.getElementById("btn-pdf")
 
-   calcularTotalPrecioLista(filtracionNombre);
-   calcularTotalPrecioNeto(filtracionNombre);    
+    btnPdf2.addEventListener("click", () =>{
+      botonGenerarPdf(filtracionNombre);
+      
+      
+    })
+    const casillasTotalNeto = document.getElementById("casillasTotalNeto");
+    const totalCasilla = document.getElementById("casillasTotalLista");
+    totalCasilla.innerHTML= `Total Precios (lista) Mercaderia: $${calcularTotalPrecioLista(filtracionNombre)}`
+    casillasTotalNeto.innerHTML=`Total Precios (neto) Mercaderia: $${calcularTotalPrecioNeto(filtracionNombre)}`
   });
+
+  
   const contVerPedidos = document.getElementById("misPedidos");
   const contBotton = document.getElementById("cont-btnReset")
 
@@ -315,50 +276,80 @@ const verProductosGuardados = (elementoNombre) => {
   btnEliminarGuardados.addEventListener("click" , () =>{
     const totalCasilla = document.getElementById("casillasTotalLista");
     const casillasTotalNeto = document.getElementById("casillasTotalNeto");
-    console.log("si funciona");
-    localStorage.removeItem("guardarPedidos");
+    console.log("no se borran los pedidos guardados");
+    localStorage.removeItem('guardarPedidos');
+    pedidosGuardados.length = 0
     contVerPedidos.innerHTML="";
     totalCasilla.innerHTML ="";
     casillasTotalNeto.innerHTML = "";
   })
 }
-
+//FUNCION PARA CALCULAR LOS DESCUENTOS 
 const calcularDescuentos = (precioProducto,porcentajeDescuento) =>{
   const descuento = (precioProducto * porcentajeDescuento) / 100;
   const precioConDescuento = precioProducto - descuento;
   return (precioConDescuento).toFixed(2);
 }
-
-
+//FUNCION GENERADORA DE PDF 
 const generarPDF2 = (datos) => {
   let doc = new jsPDF();
 
+  // Agregar información adicional
+  doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0); // Cambiar color del texto a negro
+
+  const margin = 15;
+  let yPosition = margin;
+
+  doc.text("Nombre: Hugo Defilippi / Teléfono: 3426107747 / Provincia: Santa Fe / Localidad: Santa Fe", margin, yPosition);
+  yPosition += 20; // Aumentar la posición vertical
+
+  // Obtener el nombre del cliente para el título
   const inputNombreCliente2 = document.getElementById("clienteNombre").value.toUpperCase();
   const dynamicTitle = `PEDIDO ${inputNombreCliente2}`;
 
+  // Configurar el título en el PDF
   doc.setFontSize(25);
   doc.setTextColor(0, 0, 0);
   doc.setFillColor(255, 255, 255);
   const titleWidth = doc.getStringUnitWidth(dynamicTitle) * doc.internal.getFontSize() / doc.internal.scaleFactor;
   const titleX = (doc.internal.pageSize.width - titleWidth) / 2;
 
-  doc.text(dynamicTitle, titleX, 15);
-  
+  doc.text(dynamicTitle, titleX, yPosition);
+
+  // Aumentar la posición vertical después del título
+  yPosition += 20;
+
+  // Generar la tabla de pedidos
   const pdfData = datos.map(item => [
     item.nombreProducto,
     item.unidadesProducto,
     `$${item.precioProducto} ARS`,
     `$${(item.precioProducto / 1.21).toFixed(2)} ARS`,
     `$${(item.precioProducto * item.unidadesProducto)} ARS`,
-    `$${calcularDescuentos(item.precioProducto,item.descuentoProducto) * item.unidadesProducto } ARS`,
+    `$${calcularDescuentos(item.precioProducto, item.descuentoProducto) * item.unidadesProducto } ARS`,
   ]);
 
   if (pdfData.length > 0) {
-    doc.autoTable({
-      startY: 25,
+    const table = doc.autoTable({
+      startY: yPosition,
       head: [["PRODUCTO", "UNIDADES", "PRECIO", "PRECIO S/IVA","SUBTOTAL","TOTAL BONIFICADO"]],
       body: pdfData
     });
+
+    // Calcular la posición vertical para los textos siguientes
+    yPosition = table.lastAutoTable.finalY + 10; // 10 unidades de espacio después de la tabla
+
+    // Agregar los resultados de las funciones
+    const totalListaTexto = `Total Precios (lista) Mercaderia: $${calcularTotalPrecioLista(datos).toFixed(2)}`;
+    doc.setTextColor(0, 0, 0); // Cambiar color del texto a negro
+    doc.setFontSize(12); // Cambiar el tamaño del texto
+    doc.text(totalListaTexto, margin, yPosition);
+
+    yPosition += 10; // Aumentar la posición vertical
+
+    const totalNetoTexto = `Total Precios (neto) Mercaderia: $${calcularTotalPrecioNeto(datos).toFixed(2)}`;
+    doc.text(totalNetoTexto, margin, yPosition);
 
     doc.save(dynamicTitle);
   } else {
@@ -366,9 +357,14 @@ const generarPDF2 = (datos) => {
   }
 };
 
+
+
+
+
+
+//FUNCION QUE RESETEA EN GENERAL TODOS LOS PEDIDOS GUARDADOS
 const btnBorrarPedidos = () =>{
   const btnBorrarPedidos = document.getElementById("btn-borrarPedidos");
-  
   btnBorrarPedidos.addEventListener("click" , () =>{
     const contenedorPedidos= document.getElementById("misPedidos");
     const totalCasilla = document.getElementById("casillasTotalLista");
@@ -382,23 +378,36 @@ const btnBorrarPedidos = () =>{
     casillasTotalNeto.innerHTML = "";
   })
 }
-
+//FUNCION PARA CALCULAR TODOS LOS PRECIOS DE LISTA DE MIS PEDIDOS
 const calcularTotalPrecioLista = (array) =>{
-  const totalCasilla = document.getElementById("casillasTotalLista");
   const datosFinales = array;
-
  let total = datosFinales.reduce((acumulador,item) =>{
    return acumulador+= item.precioProducto * item.unidadesProducto
  },0)
- totalCasilla.innerHTML = `<p>Total Precios (lista) Mercaderia: $${total}</p>`
+ return total
 }
-
+//FUNCION PARA CALCULAR TODOS LOS PRECIOS NETOS DE MIS PEDIDOS
 const calcularTotalPrecioNeto = (array) =>{
-  const casillasTotalNeto = document.getElementById("casillasTotalNeto");
   const datosPrecios = array
   let salida =datosPrecios.reduce((acumulador,elemento) =>{
       return acumulador+= calcularDescuentos(elemento.precioProducto, elemento.descuentoProducto) * elemento.unidadesProducto
   },0)
-
-  return casillasTotalNeto.innerHTML = `<p>Total Precios (neto) Mercaderia: $${salida}</p>`
+  return salida
+}
+//FUNCION PARA VOLVER AL MENU PRINCIPAL
+const volverAtrasMisPedidos= () =>{
+  const btnVolver4 = document.getElementById("btn-volverAtras4");
+  const containerPrograma2 = document.getElementById("contMisPedidos");
+  const cargarOcalcular = document.getElementById("cargaProductos");
+  btnVolver4.addEventListener("click", () =>{
+      containerPrograma2.innerHTML="";
+      cargarOcalcular.className="containerCargarOcalcular"
+      renderContButtonsEleccion();
+      btnBaseDatos();
+      btnCargarProductos();
+      btnCalcularProductos();
+      btnCargarPedidos();
+      btnListaPrecios();
+      textInfinito();
+  })
 }

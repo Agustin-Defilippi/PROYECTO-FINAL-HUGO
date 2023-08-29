@@ -179,21 +179,21 @@ const volverAtrasCalcularProducto = () => {
         textInfinito();
     })
 }
-const volverAtrasCalcularProducto2 = () => {
-  console.log("qsy");
-    const containerPadre = document.getElementById("containerPadre");
+const volverAtrasCalcularProducto2 = (x) => {
+    console.log("funcion ejecutada");
+    const containerPadre = document.getElementById(x);
     const cargarOcalcular = document.getElementById("cargaProductos");
-    
-        containerPadre.innerHTML = "";
-        cargarOcalcular.className = "containerCargarOcalcular"
-        renderContButtonsEleccion();
-        btnCargarProductos();
-        btnCalcularProductos();
-        btnBaseDatos();
-        btnCargarPedidos();
-        btnListaPrecios();
-        textInfinito();
+    containerPadre.innerHTML = "";
+    cargarOcalcular.className = "containerCargarOcalcular"
+    renderContButtonsEleccion();
+    btnCargarProductos();
+    btnCalcularProductos();
+    btnBaseDatos();
+    btnCargarPedidos();
+    btnListaPrecios();
+    textInfinito();
 }
+
 
 const mostrarBtnFinalizar1 = () => {
     const btnFinalizar1 = document.getElementById("btn-descontarStock");
@@ -243,7 +243,7 @@ const mostrarBtnFinalizar1 = () => {
 
         
         setTimeout(() => {
-            volverAtrasCalcularProducto2()
+            volverAtrasCalcularProducto2("containerPadre");
         }, 2000);
     });
     
